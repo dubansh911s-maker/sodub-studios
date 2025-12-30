@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SODUB STUDIOS | Akul & Ansh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&display=swap');
+        
+        :root { --gold: #D4AF37; --black: #050505; }
+        body { font-family: 'Outfit', sans-serif; background: var(--black); color: white; overflow-x: hidden; scroll-behavior: smooth; }
+        .heading-font { font-family: 'Bebas Neue', cursive; letter-spacing: 4px; }
+        
+        .gold-gradient {
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gold {
+            background: linear-gradient(45deg, #BF953F, #AA771C);
+            color: black; font-weight: 800; transition: all 0.3s ease;
+        }
+        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(191, 149, 63, 0.5); }
+
+        .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+        .page-active { display: block !important; opacity: 1; transform: translateY(0); }
+
+        .glass { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(212, 175, 55, 0.1); backdrop-filter: blur(15px); }
+
+        /* ENHANCED NAVIGATION BUTTONS */
+        .nav-btn {
+            padding: 12px 24px;
+            border: 2px solid #D4AF37;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            color: white;
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .nav-btn:hover {
+            background: #D4AF37;
+            color: black;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .custom-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .custom-table th { padding: 15px; color: #D4AF37; border-bottom: 1px solid rgba(212, 175, 55, 0.2); font-family: 'Bebas Neue'; }
+        .custom-table td { padding: 25px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+        #qr-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
+        #qrcode { background: white; padding: 25px; border-radius: 30px; border: 8px solid #D4AF37; box-shadow: 0 0 50px rgba(212, 175, 55, 0.3); }
+
+        /* WHATSAPP BUBBLE ANIMATION */
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        .wa-float {
+            position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            animation: pulse-gold 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/918318853090" class="wa-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div id="qr-modal" onclick="closeQR()">
+        <div class="mb-8">
+            <i class="fas fa-mobile-alt text-5xl text-[#D4AF37] mb-4 animate-bounce"></i>
+            <h2 id="qr-title" class="heading-font text-4xl gold-gradient uppercase">PROJECT NAME</h2>
+        </div>
+        <div id="qrcode" class="mb-8"></div>
+        <p class="heading-font text-xl text-white tracking-widest uppercase mb-2">Scan with Phone Camera</p>
+        <p class="text-slate-500 text-sm">Tap anywhere to close</p>
+    </div>
+
+    <nav class="fixed top-0 w-full z-[100] px-4 py-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center glass rounded-3xl p-6 gap-6">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="nav('home')">
+                <div class="w-12 h-12 border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-black rounded-xl text-xl">S</div>
+                <span class="heading-font text-3xl gold-gradient uppercase tracking-widest">SODUB STUDIOS</span>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-4">
+                <button onclick="nav('home')" class="nav-btn">Home</button>
+                <button onclick="nav('story')" class="nav-btn">Story</button>
+                <button onclick="nav('queries')" class="nav-btn">Queries</button>
+                <button onclick="nav('pricing')" class="nav-btn">Pricing</button>
+                <button onclick="nav('demo-view')" class="btn-gold px-8 py-3 rounded-xl text-lg border-2 border-transparent heading-font">Scan Demos</button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="page-home" class="page page-active pt-80 md:pt-60 px-6 pb-20">
+        <div class="max-w-5xl mx-auto text-center mb-32">
+            <div class="inline-block px-4 py-1 border border-[#D4AF37]/30 rounded-full text-[10px] font-bold tracking-[0.3em] text-[#D4AF37] mb-8 uppercase">Premium Digital Agency</div>
+            <h1 class="heading-font text-7xl md:text-9xl mb-6 uppercase leading-none">Grow <span class="gold-gradient">Online.</span></h1>
+            <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+                We transform small businesses into digital giants. Engineered with passion by <b class="text-white">Akul & Ansh</b>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <button onclick="nav('demo-view')" class="btn-gold px-12 py-4 rounded-xl heading-font text-xl uppercase tracking-widest">Scan Live Demos</button>
+                <button onclick="nav('pricing')" class="glass px-12 py-4 rounded-xl heading-font text-xl border border-[#D4AF37]/30 uppercase tracking-widest">Pricing</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-story" class="page pt-80 md:pt-60 px-6 pb-20">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="heading-font text-7xl mb-12 gold-gradient text-center uppercase">Our Legacy</h2>
+            <div class="glass p-12 rounded-[3rem] space-y-8 text-lg text-slate-300 leading-relaxed border-white/5">
+                <p>Every great empire starts with a single brick. For <b class="text-[#D4AF37] uppercase tracking-tighter">Sodub Web Studios</b>, that brick was laid four years ago. It started with two friends, <b class="text-white">Akul and Ansh</b>, realizing that local businesses were being left behind.</p>
+                <p class="text-2xl font-bold text-white italic border-l-4 border-[#D4AF37] pl-6 py-2">"We didn't just want to build websites; we wanted to build digital legacies."</p>
+                <p>We spent four years mastering the balance between <b>hard work</b> and <b>smart work</b>. We transformed from two dreamers with a single laptop into business partners with a mission.</p>
+                <p>Whether it's the precision of <b class="text-white">Ansh's</b> development or the strategic vision of <b class="text-white">Akul</b>, we ensure every pixel serves a purpose. This is <b class="gold-gradient uppercase tracking-widest">Sodub Studios.</b></p>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-queries" class="page pt-80 md:pt-60 px-6 pb-20">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="heading-font text-7xl gold-gradient uppercase">Common Queries</h2>
+            </div>
+            <div class="space-y-4 mb-16">
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(1)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">1. How fast will my website be delivered?</span><i id="icon-1" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-1" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">Standard business sites are delivered within 3-5 days. Premium custom builds take 7-10 days.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(2)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">2. Will it work perfectly on mobile?</span><i id="icon-2" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-2" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">Yes, we use "Mobile-First" architecture. Every site is optimized for smartphones.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(3)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">3. Do I own the domain and website?</span><i id="icon-3" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-3" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">Yes. Once final payment is made, you are the 100% legal owner.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(4)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">4. How do I receive customer orders?</span><i id="icon-4" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-4" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">All bookings are sent directly to your personal WhatsApp number instantly.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(5)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">5. Is there a monthly maintenance fee?</span><i id="icon-5" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-5" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">We offer Monthly Support plans, or you can pay Yearly for a discount.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(6)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">6. Can you help with Google SEO?</span><i id="icon-6" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-6" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">Yes, we include local SEO so your shop shows up when people search locally.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(7)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">7. What happens if I want to change prices?</span><i id="icon-7" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-7" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">Just message us. We handle price updates within 24 hours for active clients.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(8)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">8. Do you provide professional photos?</span><i id="icon-8" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-8" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">We use high-quality stock images, but recommend your own shop photos.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(9)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">9. Why do you charge an advance fee?</span><i id="icon-9" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-9" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">The ₹599 advance confirms your slot and covers initial domain/server setup.</div></div>
+                <div class="glass rounded-2xl overflow-hidden border-white/5"><button onclick="toggleFAQ(10)" class="w-full p-6 text-left flex justify-between items-center hover:bg-white/5"><span class="font-bold text-lg">10. What is a "Digital Legacy"?</span><i id="icon-10" class="fas fa-plus text-[#D4AF37]"></i></button><div id="faq-10" class="hidden p-6 pt-0 text-slate-400 text-sm border-t border-white/5">It's a professional online identity that grows your business 24/7.</div></div>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-pricing" class="page pt-80 md:pt-60 px-6 pb-20">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="heading-font text-7xl gold-gradient uppercase text-center mb-16">The Investment</h2>
+            <div class="glass p-10 rounded-[3rem] mb-12 border-white/5 shadow-2xl">
+                <table class="custom-table">
+                    <thead><tr><th>Phase</th><th>Detail</th><th>Amount</th></tr></thead>
+                    <tbody>
+                        <tr><td class="font-bold">Advance Fee</td><td>Project Booking</td><td>₹599</td></tr>
+                        <tr><td class="font-bold">Handover</td><td>Final Live Build</td><td>₹499</td></tr>
+                        <tr class="bg-[#D4AF37]/10 text-[#D4AF37] font-black uppercase tracking-widest"><td>Total Setup</td><td>Premium Architecture</td><td>₹1,098</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass p-10 rounded-[3rem] border-white/5 flex flex-col justify-between">
+                    <div><h3 class="heading-font text-3xl mb-4 text-slate-300">Monthly</h3><p class="text-5xl font-black mb-4 gold-gradient">₹999</p></div>
+                    <button onclick="contactWhatsApp('Monthly Support')" class="w-full py-4 glass border border-[#D4AF37]/30 text-[#D4AF37] rounded-xl uppercase font-black hover:bg-[#D4AF37] hover:text-black transition">Order on WhatsApp</button>
+                </div>
+                <div class="glass p-10 rounded-[3rem] border-[#D4AF37] bg-gradient-to-b from-[#D4AF37]/10 to-transparent flex flex-col justify-between">
+                    <div><h3 class="heading-font text-3xl mb-4">Yearly</h3><p class="text-5xl font-black mb-4 gold-gradient">₹4,999</p></div>
+                    <button onclick="contactWhatsApp('Yearly Plan')" class="w-full py-4 btn-gold rounded-xl uppercase font-black">Order on WhatsApp</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-demo-view" class="page pt-80 md:pt-60 px-6 pb-20">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="heading-font text-7xl gold-gradient uppercase text-center mb-16">Live Demos</h2>
+            <div class="glass p-8 md:p-12 rounded-[3.5rem] border-white/10 shadow-2xl">
+                <table class="custom-table">
+                    <thead><tr><th>Industry</th><th>Project</th><th class="text-right">QR Scan</th></tr></thead>
+                    <tbody>
+                        <tr><td>Grooming</td><td class="font-bold">Luxe Cuts</td><td class="text-right"><button onclick="generateQR('salon5.html', 'Luxe Cuts')" class="btn-gold px-6 py-3 rounded-xl uppercase text-[10px] font-black">Get QR</button></td></tr>
+                        <tr><td>Automotive</td><td class="font-bold">Drive Hub</td><td class="text-right"><button onclick="generateQR('CR3.html', 'Drive Hub')" class="btn-gold px-6 py-3 rounded-xl uppercase text-[10px] font-black">Get QR</button></td></tr>
+                        <tr><td>Personal</td><td class="font-bold">Life OS</td><td class="text-right"><button onclick="generateQR('TMD2.html', 'Life OS')" class="btn-gold px-6 py-3 rounded-xl uppercase text-[10px] font-black">Get QR</button></td></tr>
+                        <tr><td>Hospitality</td><td class="font-bold">Midnight Brew</td><td class="text-right"><button onclick="generateQR('cafe.html', 'Midnight Brew')" class="btn-gold px-6 py-3 rounded-xl uppercase text-[10px] font-black">Get QR</button></td></tr>
+                        <tr><td>Property</td><td class="font-bold">Elite Estates</td><td class="text-right"><button onclick="generateQR('estate.html', 'Elite Estates')" class="btn-gold px-6 py-3 rounded-xl uppercase text-[10px] font-black">Get QR</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-40 py-20 border-t border-white/5 text-center">
+        <div class="heading-font text-4xl gold-gradient mb-4 uppercase">Sodub Studios</div>
+        <p class="text-slate-700 text-[10px] font-bold uppercase tracking-[0.5em]">Akul & Ansh • Gonda, UP</p>
+    </footer>
+
+    <script>
+        const MY_PHONE_NUMBER = "918318853090";
+        function nav(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
+            document.getElementById('page-' + id).classList.add('page-active');
+            window.scrollTo(0,0);
+        }
+        function toggleFAQ(id) {
+            const content = document.getElementById(`faq-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('fa-plus');
+            icon.classList.toggle('fa-minus');
+        }
+        function generateQR(url, name) {
+            const modal = document.getElementById('qr-modal');
+            const qrDiv = document.getElementById('qrcode');
+            document.getElementById('qr-title').innerText = name;
+            qrDiv.innerHTML = "";
+            new QRCode(qrDiv, { text: url, width: 200, height: 200 });
+            modal.style.display = "flex";
+        }
+        function closeQR() { document.getElementById('qr-modal').style.display = "none"; }
+        function contactWhatsApp(plan) {
+            window.open(`https://wa.me/${MY_PHONE_NUMBER}?text=Hi Sodub! I have a ${plan}`, '_blank');
+        }
+    </script>
+</body>
+</html>
